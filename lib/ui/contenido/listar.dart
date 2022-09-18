@@ -21,8 +21,24 @@ class _ListarMateriasState extends State<ListarMaterias> {
           itemCount: _materias.length,
           itemBuilder: (context, pos) {
             return ListTile(
-              onTap: (){
-                
+              onLongPress: () {
+                _eliminarmateria(context, _materias[pos]);
+              },
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AdicionarMaterias(
+                        gestionmateria: _materias[pos]), //Llamar la Vista
+                  ),
+                ).then((resultado) //Espera por un Resultado
+                    {
+                  if (resultado != null) {
+                    _materias[pos] = resultado[0];
+                    //Adiciona a la lista lo que recupera de la vista TextoEjercicio
+                    setState(() {});
+                  }
+                });
               },
               leading: CircleAvatar(
                 child: Text(_materias[pos].nota),
@@ -40,18 +56,53 @@ class _ListarMateriasState extends State<ListarMaterias> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const AdicionarMaterias(
-                  titulo: 'Hola Mundo'), //Llamar la Vista
+              builder: (_) => AdicionarMaterias(
+                  gestionmateria: Materia(
+                      nombre: '',
+                      profesor: '',
+                      nota: '',
+                      creditos: '')), //Llamar la Vista
             ),
           ).then((resultado) //Espera por un Resultado
               {
-            _materias.addAll(
-                resultado); //Adiciona a la lista lo que recupera de la vista TextoEjercicio
-            setState(() {});
+            if (resultado != null) {
+              _materias.addAll(
+                  resultado); //Adiciona a la lista lo que recupera de la vista TextoEjercicio
+              setState(() {});
+            }
           });
         },
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  _eliminarmateria(context, Materia elmateria) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text('Eliminar Materia'),
+              content: Text('Realmente Dese Eliminar: ${elmateria.nombre}'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      _materias.remove(elmateria);
+                      setState(() {});
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Eliminar',
+                      style: TextStyle(color: Colors.red),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Cancelar',
+                      style: TextStyle(color: Colors.blue),
+                    ))
+              ],
+            ));
   }
 }

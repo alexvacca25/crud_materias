@@ -1,9 +1,11 @@
 import 'package:crud_materias/domain/modelos/materias.dart';
+import 'package:crud_materias/ui/contenido/widget.dart';
 import 'package:flutter/material.dart';
 
 class AdicionarMaterias extends StatefulWidget {
-  final titulo;
-  const AdicionarMaterias({Key? key, this.titulo}) : super(key: key);
+  final Materia gestionmateria;
+  const AdicionarMaterias({Key? key, required this.gestionmateria})
+      : super(key: key);
 
   @override
   State<AdicionarMaterias> createState() => _AdicionarMateriasState();
@@ -17,7 +19,10 @@ class _AdicionarMateriasState extends State<AdicionarMaterias> {
   TextEditingController controlcreditos = TextEditingController();
   @override
   void initState() {
-    controlnombre.text = widget.titulo;
+    controlnombre.text = widget.gestionmateria.nombre;
+    controlprofesor.text = widget.gestionmateria.profesor;
+    controlcreditos.text = widget.gestionmateria.creditos;
+    controlnota.text = widget.gestionmateria.nota;
     // TODO: implement initState
     super.initState();
   }
@@ -26,81 +31,25 @@ class _AdicionarMateriasState extends State<AdicionarMaterias> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.titulo),
+        title: const Text('Adicionar Materias'),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-              controller: controlnombre,
-              decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Nombres',
-                  // suffix: Icon(Icons.access_alarm),
-                  suffix: GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: () {
-                      controlnombre.clear();
-                    },
-                  )
-                  //probar suffix
-                  ),
-            ),
+          Textos(
+            controlartextos: controlnombre,
+            etiqueta: 'Nombre',
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-              controller: controlprofesor,
-              decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Profesor',
-                  // suffix: Icon(Icons.access_alarm),
-                  suffix: GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: () {
-                      controlnombre.clear();
-                    },
-                  )
-                  //probar suffix
-                  ),
-            ),
+          Textos(
+            controlartextos: controlprofesor,
+            etiqueta: 'Profesor',
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-              controller: controlnota,
-              decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Nota',
-                  // suffix: Icon(Icons.access_alarm),
-                  suffix: GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: () {
-                      controlnombre.clear();
-                    },
-                  )
-                  //probar suffix
-                  ),
-            ),
+          Textos(
+            controlartextos: controlnota,
+            etiqueta: 'Nota',
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-              controller: controlcreditos,
-              decoration: InputDecoration(
-                  filled: true,
-                  labelText: 'Creditos',
-                  // suffix: Icon(Icons.access_alarm),
-                  suffix: GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: () {
-                      controlnombre.clear();
-                    },
-                  )
-                  //probar suffix
-                  ),
-            ),
+          Textos(
+            controlartextos: controlcreditos,
+            etiqueta: 'Creditos',
           ),
           ElevatedButton(
               onPressed: () {
